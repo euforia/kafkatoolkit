@@ -11,7 +11,7 @@ import (
 	"sync"
 
 	"github.com/Shopify/sarama"
-	"github.com/euforia/kafka-websocket"
+	"github.com/euforia/kafkatoolkit"
 )
 
 var (
