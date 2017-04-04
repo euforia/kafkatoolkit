@@ -16,7 +16,7 @@ dist: clean
 	mkdir ./build
 
 	$(BUILD_CMD) -o ./build/$(KAFKA_TOOL_NAME) .
-	cd ./build && tar -czf $(KAFKA_TOOL_NAME)-$(GOOS).tgz $(KAFKA_TOOL_NAME); rm -f $(KAFKA_TOOL_NAME)
+	cd ./build && tar -czf $(KAFKA_TOOL_NAME)-darwin.tgz $(KAFKA_TOOL_NAME); rm -f $(KAFKA_TOOL_NAME)
 
 	GOOS=linux $(BUILD_CMD) -o ./build/$(KAFKA_TOOL_NAME) .
 	cd ./build && tar -czf $(KAFKA_TOOL_NAME)-linux.tgz $(KAFKA_TOOL_NAME); rm -f $(KAFKA_TOOL_NAME)
