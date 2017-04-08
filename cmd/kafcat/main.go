@@ -28,6 +28,10 @@ var (
 
 	listTopics = flag.Bool("l", false, "List topics")
 
+	filterString = flag.String("filter", "", "Filter")
+
+	printHeader = flag.Bool("header", false, "Print header")
+
 	verbose = flag.Bool("verbose", false, "Turn on underlying (sarama) logging")
 	logger  = log.New(os.Stderr, "", log.LstdFlags|log.Lmicroseconds)
 )
@@ -176,14 +180,41 @@ func main() {
 	}
 
 	go func() {
-		for msg := range messages {
-			ms := string(msg.Value)
-			if ms[len(ms)-1] != '\n' {
-				fmt.Printf("[ %s/%d/%d/%s ] %s\n", *topic, msg.Partition, msg.Offset, msg.Key, msg.Value)
-			} else {
-				fmt.Printf("[ %s/%d/%d/%s ] %s", *topic, msg.Partition, msg.Offset, msg.Key, msg.Value)
+		var filter []byte
+		if *filterString != "" {
+			filter = []byte(*filterString)
+		}
+
+		if *printHeader {
+
+			for msg := range messages {
+				if kafkatoolkit.Filter(filter, msg.Value) {
+					continue
+				}
+
+				ms := string(msg.Value)
+				if ms[len(ms)-1] != '\n' {
+					fmt.Printf("[ %s/%d/%d/%s ] %s\n", *topic, msg.Partition, msg.Offset, msg.Key, msg.Value)
+				} else {
+					fmt.Printf("[ %s/%d/%d/%s ] %s", *topic, msg.Partition, msg.Offset, msg.Key, msg.Value)
+				}
+			}
+
+		} else {
+			for msg := range messages {
+				if kafkatoolkit.Filter(filter, msg.Value) {
+					continue
+				}
+
+				ms := string(msg.Value)
+				if ms[len(ms)-1] != '\n' {
+					fmt.Printf("%s\n", msg.Value)
+				} else {
+					fmt.Printf("%s", msg.Value)
+				}
 			}
 		}
+
 	}()
 
 	wg.Wait()
