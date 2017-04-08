@@ -1,11 +1,6 @@
 package kafkatoolkit
 
-import (
-	"fmt"
-	"strings"
-
-	"github.com/Shopify/sarama"
-)
+import "strings"
 
 func parseKeyValuePairs(line []byte) map[string]string {
 	l := len(line)
@@ -87,7 +82,7 @@ func ParsePeers(peerList string) []string {
 
 // OffsetFromPosition calculates the offset. If startPos is oldest then offset is added, otherwise subtracted.
 // If the calculated offset is less than 0 it is set to zero.
-func OffsetFromPosition(startPos string, offset uint64) (dOffset int64, err error) {
+/*func OffsetFromPosition(startPos int64, offset int64) (dOffset int64, err error) {
 
 	switch startPos {
 	case "oldest":
@@ -96,6 +91,7 @@ func OffsetFromPosition(startPos string, offset uint64) (dOffset int64, err erro
 
 	case "newest":
 		dOffset = sarama.OffsetNewest
+		log.Println(dOffset)
 		dOffset -= int64(offset)
 		if dOffset < 0 {
 			dOffset = 0
@@ -106,4 +102,4 @@ func OffsetFromPosition(startPos string, offset uint64) (dOffset int64, err erro
 		err = fmt.Errorf("invalid offset")
 	}
 	return
-}
+}*/
